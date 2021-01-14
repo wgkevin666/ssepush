@@ -10,7 +10,13 @@
     source.addEventListener('greeting', function(event) {
         var data = event.data;
         console.log(data)
-        alert("The server says " + data.msg);
+        alert("The server says " + data.message);
+        console.log(event)
+    }, false);
+    source.addEventListener('postmessage', function(event) {
+        var data = event.data;
+        console.log(data)
+        alert("broadcast" + data.message);
         console.log(event)
     }, false);
     source.addEventListener('error', function(event) {

@@ -11,18 +11,19 @@ def index():
 
 @app.route('/hello')
 def publish_hello():
-    sse.publish({"message": "hello kevin"}, type='greeting', retry=4500,channel="123")
+    sse.publish({"message": "hello kevin"}, type='greeting', retry=4500, channel="123")
     return "Message sent!"
 
-@app.route('/hello')
-def publish_hello():
-    sse.publish({"message": "hello kevin"}, type='greeting', retry=4500,channel="456")
-    return "Message sent!"
+@app.route('/hello1')
+def publish_hello1():
+    sse.publish({"message": "hello david"}, type='greeting', retry=4500, channel="456")
+    return "Message sent!!!"
 
-@app.route('/hello1', methods = ['POST'])
+@app.route('/user', methods = ['POST','GET'])
 def publish_user():
-    message = request.args.get("msg")
+    print(request.method)
     print(request.args)
+    message = request.args.get('message')
     print(request.args.get("msg"))
-    sse.publish({"message": message}, type='greeting',)
+    sse.publish({"message": message }, type='postmessage')
     return "channel"
