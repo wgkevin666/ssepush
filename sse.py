@@ -15,6 +15,7 @@ def index1():
 def index2():
     return render_template("index3.html")
 
+# cheannel 123
 @app.route('/hello', methods = ['POST'])
 def publish_hello():
     json_data = request.json
@@ -22,15 +23,17 @@ def publish_hello():
     sse.publish({"message": message}, type='greeting', retry=4500, channel="123")
     return "Message sent!"
 
+# channel 456
 @app.route('/user', methods = ['POST'])
 def publish_hello1():
     json_data = request.json
     message = json_data["message"]
-    channel = json_data["user_id"]
-    # channel is userid
+    # channel = json_data["user_id"]
+    # channel is user_id
     sse.publish({"message": message}, type='greeting2', channel="456")
     return "Message sent!!!"
 
+# brodcast notifi
 @app.route('/', methods = ['POST'])
 def publish_alluser():
     # print(request.method)
