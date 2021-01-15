@@ -6,14 +6,16 @@
 <body>
   <h1>Flask-SSE Quickstart</h1>
   <script>
-    var source = new EventSource("{{ url_for('sse.stream') }}");
+    var broadcastsource = new EventSource("{{ url_for('sse.stream') }}");
+    var source = new EventSource("{{ url_for('sse.stream', channel='456') }}");
     source.addEventListener('greeting2', function(event) {
         var data = event.data;
+        data = JSON.parse(data)
         console.log(data)
         alert("The server says " + data.message);
         console.log(event)
     }, false);
-    source.addEventListener('postmessage', function(event) {
+    broadcastsource.addEventListener('postmessage', function(event) {
         var data = event.data;
         data = JSON.parse(data)
         // console.log(data)
