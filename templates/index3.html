@@ -7,7 +7,7 @@
   <h1>Flask-SSE Quickstart</h1>
   <script>
     var source = new EventSource("{{ url_for('sse.stream') }}");
-    source.addEventListener('greeting', function(event) {
+    source.addEventListener('greeting2', function(event) {
         var data = event.data;
         console.log(data)
         alert("The server says " + data.message);
