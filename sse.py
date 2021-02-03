@@ -1,9 +1,17 @@
 from flask import Flask, render_template, request
 from flask_sse import sse
+import logging
+import graypy
 
 app = Flask(__name__)
 app.config["REDIS_URL"] = "redis://localhost:6379"
 app.register_blueprint(sse, url_prefix='/stream')
+
+my_logger = logging.getLogger('sse')
+my_logger.setLevel(logging.DEBUG)
+handler = graypy.GELFUDPHandler('localhost', 12201)
+my_logger.addHandler(handler)
+
 
 @app.route('/')
 def index():
@@ -43,4 +51,16 @@ def publish_alluser():
     json_data = request.json
     message = json_data["message"]
     sse.publish({"message": message }, type='postmessage')
-    return "channel"
+    return "brodcast OK!!"
+    my_logger.debug('publish_alluser post')
+    try:
+        unknow_function()
+    except NameError:
+        my_logger('The "unknow_function" raised an error')
+
+
+
+if __name__ == '__main__':
+    gunicorn_logger = logging.getLogger('gunicorn.info')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
