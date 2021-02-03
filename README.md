@@ -13,4 +13,4 @@ SUBSCRIBE channel channelname
 pip3 install requirements.txt
 
 ### run server
-gunicorn sse:app --worker-class gevent --bind 127.0.0.1:8000 --log-syslog-to udp://localhost:514
+gunicorn sse:app --worker-class gevent --bind 127.0.0.1:8000 --log-level=debug --log-syslog-to  udp://127.0.0.1:12201

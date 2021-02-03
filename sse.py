@@ -7,6 +7,7 @@ app = Flask(__name__)
 app.config["REDIS_URL"] = "redis://localhost:6379"
 app.register_blueprint(sse, url_prefix='/stream')
 
+# config graylog setting
 my_logger = logging.getLogger('sse')
 my_logger.setLevel(logging.DEBUG)
 handler = graypy.GELFUDPHandler('localhost', 12201)
@@ -28,6 +29,7 @@ def index2():
 def publish_hello():
     json_data = request.json
     message = json_data["message"]
+    # channel = json_data["channel"]
     sse.publish({"message": message}, type='greeting', retry=4500, channel="123")
     return "Message sent!"
 
@@ -36,9 +38,8 @@ def publish_hello():
 def publish_hello1():
     json_data = request.json
     message = json_data["message"]
-    # channel = json_data["user_id"]
-    # channel is user_id
-    sse.publish({"message": message}, type='greeting2', channel="456")
+    channel = json_data["channel"]
+    sse.publish({"message": message}, type='greeting2', channel=channel)
     return "Message sent!!!"
 
 # brodcast notifi
