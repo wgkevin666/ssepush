@@ -10,10 +10,11 @@
   <script>
     function myFunction() {
       var x = document.getElementById("myText").value;
+      var source = new EventSource("{{ url_for('sse.stream', channel=x) }}");
       console.log(myText)
     }
     var broadcastsource = new EventSource("{{ url_for('sse.stream') }}");
-    var source = new EventSource("{{ url_for('sse.stream', channel='456') }}");
+    // var source = new EventSource("{{ url_for('sse.stream', channel='456') }}");
     source.addEventListener('greeting2', function(event) {
         var data = event.data;
         data = JSON.parse(data)
