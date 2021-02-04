@@ -11,24 +11,38 @@
   <script>
  
     var source = new EventSource("{{ url_for('sse.stream', channel='') }}");
-    
+    var broadcastsource = new EventSource("{{ url_for('sse.stream') }}");
+
     function updateChannelID() {
       var ChannelID = document.getElementById("channel_ID").value;
-      source = new EventSource("{{ url_for('sse.stream', channel='" + ChannelID + "') }}");
-      console.log(source)
-    }
-    
-    source.addEventListener('greeting2', function(event) {
+      console.log(ChannelID)
+      
+      source1 = new EventSource("http://127.0.0.1:8000/stream?channel="+ChannelID);
+      source1.addEventListener('greeting2', function(event) {
         var data = event.data;
         data = JSON.parse(data)
         console.log(data)
         alert("The server says " + data.message);
         console.log(event)
+        
     }, false);
-
-    source.addEventListener('error', function(event) {
+    source1.addEventListener('error', function(event) {
         alert("Failed to connect to event stream. Is Redis running?");
     }, false);
+      console.log(source)
+    }
+    
+   
+    broadcastsource.addEventListener('postmessage', function(event) {
+        var data = event.data;
+        data = JSON.parse(data)
+        // console.log(data)
+        alert("broadcast " + data.message);
+        console.log(event)
+        broadcastsource.close();
+    }, false);
+
+   
 
   </script>
 </body>
