@@ -5,16 +5,19 @@
 </head>
 <body>
   <h1>Flask-SSE Quickstart</h1>
-  <input type="text" id="myText" value="Some channel">
-  <button onclick="myFunction()">channel</button>
+  <input id="channel_ID" type="text" value="12344">
+  <button onclick="updateChannelID()">channel</button>
+
   <script>
-    function myFunction() {
-      var x = document.getElementById("myText").value;
-      var source = new EventSource("{{ url_for('sse.stream', channel=x) }}");
-      console.log(myText)
+ 
+    var source = new EventSource("{{ url_for('sse.stream', channel='') }}");
+    
+    function updateChannelID() {
+      var ChannelID = document.getElementById("channel_ID").value;
+      source = new EventSource("{{ url_for('sse.stream', channel='" + ChannelID + "') }}");
+      console.log(source)
     }
-    var broadcastsource = new EventSource("{{ url_for('sse.stream') }}");
-    // var source = new EventSource("{{ url_for('sse.stream', channel='456') }}");
+    
     source.addEventListener('greeting2', function(event) {
         var data = event.data;
         data = JSON.parse(data)
@@ -22,17 +25,11 @@
         alert("The server says " + data.message);
         console.log(event)
     }, false);
-    broadcastsource.addEventListener('postmessage', function(event) {
-        var data = event.data;
-        data = JSON.parse(data)
-        // console.log(data)
-        alert("broadcast " + data.message);
-        console.log(event)
-        broadcastsource.close();
-    }, false);
+
     source.addEventListener('error', function(event) {
         alert("Failed to connect to event stream. Is Redis running?");
     }, false);
+
   </script>
 </body>
 </html>
