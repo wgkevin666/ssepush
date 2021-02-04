@@ -10,8 +10,10 @@
 
   <script>
  
-    var source = new EventSource("{{ url_for('sse.stream', channel='') }}");
-    var broadcastsource = new EventSource("{{ url_for('sse.stream') }}");
+    // var source = new EventSource("{{ url_for('sse.stream', channel='') }}");
+    var source = new EventSource("http://127.0.0.1:8000/stream?channel=");
+    // var broadcastsource = new EventSource("{{ url_for('sse.stream') }}");
+    var broadcastsource = new EventSource("http://127.0.0.1:8000/stream");
 
     function updateChannelID() {
       var ChannelID = document.getElementById("channel_ID").value;
@@ -26,6 +28,7 @@
         console.log(event)
         
     }, false);
+
     source1.addEventListener('error', function(event) {
         alert("Failed to connect to event stream. Is Redis running?");
     }, false);
